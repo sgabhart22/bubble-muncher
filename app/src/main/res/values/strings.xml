@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">Periwinkle</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_cleanup">Cleanup</string>
+
+    <string name="word1">Word #1</string>
+    <string name="word2">Word #2</string>
+    <string name="word3">Word #3</string>
+    <string name="word4">Word #4</string>
+
+</resources>
