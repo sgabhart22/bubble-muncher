@@ -330,15 +330,7 @@ public class Field implements Serializable {
                     selected.y = 0;
                     selected.x++;
                 }
-                // More boxes in current word
-            /*
-            if(boxes[selected.x][selected.y + 1] != null){
-                selected.y++;
-            } else {
-                selected.y = 0;
-                selected.x++;
-            }
-            */
+
             } else if(selected.y == boxes[selected.x].length - 1){
                 if(selected.x < boxes.length - 1){
                     selected.x++;
@@ -358,6 +350,69 @@ public class Field implements Serializable {
         } else {
             boxes[selected.x][selected.y].setSelected(true);
         }
+    } // advance
+
+    public void deleteLetter(){
+        Box b = new Box();
+
+        if(selected.x == 7){
+            b = finalBoxes[selected.y];
+        } else {
+            b = boxes[selected.x][selected.y];
+        }
+
+        if(b.getResponse() != ' '){
+            b.setResponse(' ');
+            selected = moveToPrevious();
+        } else {
+            selected = moveToPrevious();
+        }
+    }
+
+    public Position moveToPrevious(){
+        Position current = new Position(selected.x, selected.y);
+
+        if(current.x == 7){
+            if(current.y == 0){
+                current.x = boxes.length - 1;
+                current.y = boxes[current.x].length - 1;
+
+                finalBoxes[selected.y].setSelected(false);
+                boxes[current.x][current.y].setSelected(true);
+            } else {
+                current.y--;
+
+                finalBoxes[selected.y].setSelected(false);
+                finalBoxes[current.y].setSelected(true);
+            }
+
+            return current;
+        } else {
+            if(current.y == 0){
+                if(current.x == 0){
+                    return current;
+                } else {
+                    current.x--;
+
+                    int y = boxes[current.x].length - 1;
+                    if(boxes[current.x][y] == null){
+                        current.y = boxes[current.x].length - 2;
+                    } else {
+                        current.y = y;
+                    }
+                }
+
+                boxes[selected.x][selected.y].setSelected(false);
+                boxes[current.x][current.y].setSelected(true);
+            } else {
+                current.y--;
+
+                boxes[selected.x][selected.y].setSelected(false);
+                boxes[current.x][current.y].setSelected(true);
+            }
+        }
+
+        return current;
     }
 
     public Box[][] getBoxes(){ return boxes; }

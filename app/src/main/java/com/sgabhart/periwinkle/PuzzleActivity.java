@@ -87,18 +87,25 @@ public class PuzzleActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event){
-        char c = Character.toUpperCase((char)(keyCode));
-        Log.w("PuzzleActivity onKeyUp", "Key pressed: " + c);
 
-        Field.Position selected = field.getSelected();
-
-        if(selected.x == 7){
-            field.getFinalBoxes()[selected.y].setResponse(c);
+        if(keyCode == 67){
+            Log.w("Click, PuzzleActivity", "Delete clicked.");
+            field.deleteLetter();
         } else {
-            field.getBoxes()[selected.x][selected.y].setResponse(c);
+            char c = Character.toUpperCase((char)(keyCode));
+            Log.w("PuzzleActivity onKeyUp", "Key pressed: " + c);
+
+            Field.Position selected = field.getSelected();
+
+            if(selected.x == 7){
+                field.getFinalBoxes()[selected.y].setResponse(c);
+            } else {
+                field.getBoxes()[selected.x][selected.y].setResponse(c);
+            }
+
+            field.advance();
         }
 
-        field.advance();
         fieldView.setBitmap(field.draw());
 
         return  super.onKeyUp(keyCode, event);
