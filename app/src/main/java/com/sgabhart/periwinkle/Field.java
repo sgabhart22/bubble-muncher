@@ -160,13 +160,12 @@ public class Field implements Serializable {
             answerLeftMargin += sideLength;
         } // for
 
+        boxes[selected.x][selected.y].setSelected(true);
     } // Constructor
 
     public Bitmap draw(){
 
-        if(bitmap == null){
-            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        }
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
 
@@ -287,6 +286,57 @@ public class Field implements Serializable {
 
     public Box getCurrentBox() {
         return this.boxes[this.selected.x][this.selected.y];
+    }
+
+    public void advance(){
+
+        if(selected.x == 7){
+
+            if(selected.y < finalBoxes.length - 1){
+                Box b = finalBoxes[selected.y];
+                b.setSelected(false);
+                selected.y++;
+            }
+
+        } else {
+            Box b = boxes[selected.x][selected.y];
+            b.setSelected(false);
+
+            if(selected.y < boxes[selected.x].length - 1){
+
+                selected.y++;
+                if(boxes[selected.x][selected.y] == null){
+                    selected.y = 0;
+                    selected.x++;
+                }
+                // More boxes in current word
+            /*
+            if(boxes[selected.x][selected.y + 1] != null){
+                selected.y++;
+            } else {
+                selected.y = 0;
+                selected.x++;
+            }
+            */
+            } else if(selected.y == boxes[selected.x].length - 1){
+                if(selected.x < boxes.length - 1){
+                    selected.x++;
+                    selected.y = 0;
+                } else if (selected.x == boxes.length - 1){
+                    selected.x = 7;
+                    selected.y = 0;
+                }
+            }
+        }
+
+
+
+
+        if(selected.x == 7){
+            finalBoxes[selected.y].setSelected(true);
+        } else {
+            boxes[selected.x][selected.y].setSelected(true);
+        }
     }
 
     public Box[][] getBoxes(){ return boxes; }
