@@ -90,6 +90,14 @@ public class PuzzleActivity extends AppCompatActivity {
         char c = Character.toUpperCase((char)(keyCode));
         Log.w("PuzzleActivity onKeyUp", "Key pressed: " + c);
 
+        Field.Position selected = field.getSelected();
+
+        if(selected.x == 7){
+            field.getFinalBoxes()[selected.y].setResponse(c);
+        } else {
+            field.getBoxes()[selected.x][selected.y].setResponse(c);
+        }
+
         field.advance();
         fieldView.setBitmap(field.draw());
 

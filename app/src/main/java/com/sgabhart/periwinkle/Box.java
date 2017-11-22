@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Box implements Serializable {
     private static final char BLANK = ' ';
 
-    private boolean circled, selected;
+    private boolean circled, selected, locked;
     private char response = BLANK;
     private char solution;
     private int wordNumber;
@@ -62,6 +62,8 @@ public class Box implements Serializable {
 
     public boolean isSelected() { return selected; }
 
+    public boolean isLocked(){ return locked; }
+
     /**
      * @param circled the circled to set
      */
@@ -70,6 +72,8 @@ public class Box implements Serializable {
     }
 
     public void setSelected(boolean selected) { this.selected = selected; }
+
+    public void setLocked(boolean locked){ this.locked = locked; }
 
     /**
      * @return the response

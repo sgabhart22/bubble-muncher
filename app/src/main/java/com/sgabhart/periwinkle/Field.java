@@ -154,6 +154,11 @@ public class Field implements Serializable {
             finalBoxes[i] = new Box(finalAnswer.charAt(i));
             finalBoxes[i].setCircled(true);
 
+            char testChar = finalBoxes[i].getSolution();
+            if(testChar == '"' || testChar == '-' || testChar == ' '){
+                finalBoxes[i].setLocked(true);
+            }
+
             finalRects.add(new Rect(answerLeftMargin, (int)(height * yAnswerBox),
                     answerLeftMargin + sideLength, (int)(height * (yAnswerBox + .03))));
 
@@ -185,6 +190,7 @@ public class Field implements Serializable {
 
                 if(b != null){
                     Rect r = answerRects.get((j * 6) + k);
+
                     if(b.isSelected()){
                         canvas.drawRect(r, selectedPaint);
                     }
@@ -197,6 +203,11 @@ public class Field implements Serializable {
                     }
                     else {
                         canvas.drawRect(r, boxPaint);
+                    }
+
+                    if(b.getResponse() != ' '){
+                        canvas.drawText("" + b.getResponse(), r.exactCenterX() - (int)(sideLength * .3),
+                                r.exactCenterY() + (int)(sideLength * .3), textPaint);
                     }
                 }
             }
@@ -221,7 +232,13 @@ public class Field implements Serializable {
                 canvas.drawRect(r, boxPaint);
                 canvas.drawCircle(r.exactCenterX(), r.exactCenterY(),
                         sideLength / 2, boxPaint);
+
+                if(b.getResponse() != ' '){
+                    canvas.drawText("" + b.getResponse(), r.exactCenterX() - (int)(sideLength * .3),
+                            r.exactCenterY() + (int)(sideLength * .3), textPaint);
+                }
             }
+
         }
 
         // Draw cartoon
@@ -296,6 +313,10 @@ public class Field implements Serializable {
                 Box b = finalBoxes[selected.y];
                 b.setSelected(false);
                 selected.y++;
+
+                if(finalBoxes[selected.y].isLocked()){
+                    selected.y++;
+                }
             }
 
         } else {
