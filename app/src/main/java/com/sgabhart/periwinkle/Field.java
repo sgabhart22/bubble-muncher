@@ -382,6 +382,10 @@ public class Field implements Serializable {
             } else {
                 current.y--;
 
+                if(finalBoxes[current.y].isLocked()){
+                    current.y--;
+                }
+
                 finalBoxes[selected.y].setSelected(false);
                 finalBoxes[current.y].setSelected(true);
             }
