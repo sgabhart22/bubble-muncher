@@ -29,7 +29,7 @@ public class Field implements Serializable {
     private String responder;
     private HashMap<String, ArrayList<Integer>> map = new HashMap<>();
     private int width, height, sideLength, leftMargin;
-    private Paint labelPaint, boxPaint, circlePaint, textPaint, selectedPaint;
+    private Paint labelPaint, boxPaint, circlePaint, textPaint, selectedPaint, correctPaint;
     private Rect imageRect, background;
     private Bitmap cartoon;
     private Bitmap bitmap;
@@ -72,6 +72,10 @@ public class Field implements Serializable {
         // Create Paint for highlighted letter
         selectedPaint = new Paint();
         selectedPaint.setColor(Color.parseColor("#FFAE57"));
+
+        // Create Paint for correct boxes
+        correctPaint = new Paint();
+        correctPaint.setColor(Color.parseColor("#7AF9BE"));
 
         // Create a Paint for circled boxes
         circlePaint = new Paint();
@@ -190,6 +194,9 @@ public class Field implements Serializable {
                         canvas.drawRect(r, selectedPaint);
                     }
 
+                    if(b.isCorrect()){
+                        canvas.drawRect(r, correctPaint);
+                    }
 
                     if(b.isCircled()){
                         canvas.drawRect(r, boxPaint);
@@ -215,6 +222,10 @@ public class Field implements Serializable {
 
             if(b.isSelected()){
                 canvas.drawRect(r, selectedPaint);
+            }
+
+            if(b.isCorrect()){
+                canvas.drawRect(r, correctPaint);
             }
 
             if(b.getSolution() == '"'){
@@ -405,6 +416,26 @@ public class Field implements Serializable {
         if(word.toString().equals(answer.toUpperCase())) return true;
         else return false;
     } // checkWord
+
+    public void lockWord(int wordNum){
+        Box[] word;
+
+        if(wordNum == 7){
+            word = finalBoxes;
+        } else {
+            word = boxes[wordNum];
+        }
+
+        for(Box b : word){
+            if(b != null){
+                if(!b.isLocked()){
+                    b.setLocked(true);
+                    b.setCorrect(true);
+                }
+            }
+        }
+
+    }
 
     public void advance(){
 
