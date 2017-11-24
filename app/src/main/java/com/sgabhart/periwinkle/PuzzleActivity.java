@@ -5,21 +5,24 @@ import android.graphics.Point;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class PuzzleActivity extends AppCompatActivity {
 
-    int width, height, puzzleId;
-    Point size;
-    Puzzle puzzle;
-    PuzzleDbHelper dbHelper;
-    Field field;
-    ScrollingImageView fieldView;
-    Keyboard kb;
-    KeyboardView kbView;
+    private int width, height, puzzleId;
+    private Point size;
+    private Puzzle puzzle;
+    private PuzzleDbHelper dbHelper;
+    private Field field;
+    private ScrollingImageView fieldView;
+    private Keyboard kb;
+    private KeyboardView kbView;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,35 @@ public class PuzzleActivity extends AppCompatActivity {
         width = size.x;
         height = size.y;
 
+        handler = new Handler();
         field = new Field(puzzle, width, height);
         fieldView = (ScrollingImageView)(findViewById(R.id.field));
+
+        this.registerForContextMenu(fieldView);
+        fieldView.setContextMenuListener(new ScrollingImageView.ClickListener() {
+            @Override
+            public void onContextMenu(final ScrollingImageView.Point e) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            Box b = field.findBox(e.x, e.y);
+                            fieldView.setBitmap(field.draw());
+                            PuzzleActivity.this.openContextMenu(fieldView);
+                        } catch(Exception e){
+                            Log.e("PuzzleActivity", "From onContextMenu: " + e.getMessage());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onTap(ScrollingImageView.Point e) {
+                Box b = field.findBox(e.x, e.y);
+                fieldView.setBitmap(field.draw());
+            }
+        });
+
 
         View.OnKeyListener onKeyListener = new View.OnKeyListener() {
             @Override
@@ -114,6 +144,8 @@ public class PuzzleActivity extends AppCompatActivity {
         fieldView.setBitmap(field.draw());
 
         return  super.onKeyUp(keyCode, event);
-    }
+    } // onKeyUp
+
+
 
 }

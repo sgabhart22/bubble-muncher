@@ -242,6 +242,79 @@ public class Field implements Serializable {
         return bitmap;
     }
 
+    public Box findBox(int x, int y){
+        Box box;
+        int l, r, t, b, i = 0;
+        boolean located = false;
+
+        // Search main field
+        for(Rect rec : answerRects){
+            l = (int)(rec.left);
+            r = (int)(rec.right);
+            t = (int)(rec.top);
+            b = (int)(rec.bottom);
+
+            if(x > l && x < r && y > t && y < b){
+                located = true;
+                break;
+            }
+
+            i++;
+        } // for each
+
+        // Box was found in first 4 (or 6) words
+        if(located) {
+            int word = i / 6;
+            int letter = i % 6;
+            box = boxes[word][letter];
+
+            Position previous = selected;
+            if(previous.x == 7){
+                finalBoxes[previous.y].setSelected(false);
+            } else {
+                boxes[previous.x][previous.y].setSelected(false);
+            }
+
+            this.setSelected(new Position(word, letter));
+            box.setSelected(!(box.isSelected()));
+            return box;
+        } else {
+            i = 0;
+
+            // Search final answer
+            for(Rect rec : finalRects){
+                l = (int)(rec.left);
+                r = (int)(rec.right);
+                t = (int)(rec.top);
+                b = (int)(rec.bottom);
+
+                if(x > l && x < r && y > t && y < b){
+                    located = true;
+                    break;
+                }
+
+                i++;
+            } // for
+
+            // Box was found in final answer
+            if(located){
+                box = finalBoxes[i];
+
+                Position previous = selected;
+
+                if(previous.x == 7){
+                    finalBoxes[previous.y].setSelected(false);
+                } else {
+                    boxes[previous.x][previous.y].setSelected(false);
+                }
+
+                this.setSelected(new Position(7, i));
+                box.setSelected(!(box.isSelected()));
+                return box;
+            } else return new Box();
+        }
+    }
+
     public ArrayList<Rect> getLabelRects() {
         return labelRects;
     }
