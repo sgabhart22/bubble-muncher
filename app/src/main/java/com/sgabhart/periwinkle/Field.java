@@ -21,12 +21,6 @@ import java.util.HashMap;
 
 public class Field implements Serializable {
 
-    /* TODO: Move all Paints and Graphics to a renderer.
-        Great start for housing data structures, but this object needs to communicate
-        with a dedicated graphics manipulation class. The Field class should ideally
-        serve as an intermediary between the PuzzleView and the renderer.
-     */
-
     private Puzzle puzzle;
     private ArrayList<Rect> labelRects, answerRects, finalRects;
     private Position selected = new Position(0, 0);
@@ -303,6 +297,34 @@ public class Field implements Serializable {
 
     public Box getCurrentBox() {
         return this.boxes[this.selected.x][this.selected.y];
+    }
+
+    public boolean checkWord(int wordNum){
+        String answer;
+        StringBuilder word = new StringBuilder();
+
+        if(wordNum == 7){
+            answer = answers.get(answers.size() - 1);
+
+            for (int i = 0; i < finalBoxes.length; i++) {
+                Box b = finalBoxes[i];
+
+                word.append(b.getResponse());
+            } // for
+        } else {
+            answer = answers.get(wordNum);
+
+            for(int i = 0; i < boxes[wordNum].length; i++){
+                Box b = boxes[wordNum][i];
+
+                if(b != null){
+                    word.append(b.getResponse());
+                }
+            } // for
+        }
+
+        if(word.toString().equals(answer.toUpperCase())) return true;
+        else return false;
     }
 
     public void advance(){

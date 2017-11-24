@@ -103,6 +103,11 @@ public class PuzzleActivity extends AppCompatActivity {
                 field.getBoxes()[selected.x][selected.y].setResponse(c);
             }
 
+            if(field.checkWord(selected.x)) {
+                Log.w("PuzzleActivity check", "Word #" + selected.x + 1 + " is correct");
+            } else {
+                Log.w("PuzzleActivity check", "Word #" + selected.x + 1 + " is incorrect");
+            }
             field.advance();
         }
 
