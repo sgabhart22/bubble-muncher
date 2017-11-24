@@ -99,11 +99,6 @@ public class Field implements Serializable {
         sideLength = (int)(height * .13 - height * .1);
         int endBox = leftMargin + sideLength;
 
-        // Finally, for the final answer boxes
-        finalRects = new ArrayList<>();
-        int answerLeftMargin = (int)(width * .3);
-        double yAnswerBox = .55;
-
         // Create Rectangle to house cartoon bitmap
         imageRect = new Rect((int)(width * .55), (int)(height * .05), (int)(width * .95), (int)(height * .5));
         byte[] rawImage = puzzle.getImage();
@@ -143,6 +138,12 @@ public class Field implements Serializable {
 
         String finalAnswer = answers.get(answers.size() - 1);
         finalBoxes = new Box[finalAnswer.length()];
+
+        // Finally, for the final answer boxes
+        finalRects = new ArrayList<>();
+        int answerRightMargin = (int)(width * .95);
+        int answerLeftMargin = answerRightMargin - (getFinalBoxes().length * sideLength);
+        double yAnswerBox = .55;
 
         for(int i = 0; i < finalAnswer.length(); i++){
             finalBoxes[i] = new Box(finalAnswer.charAt(i));
