@@ -139,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v){
             int id = ((PuzzleButton) v).getId();
 
-            // TODO: Start PuzzleActivity here. Put puzzle id in an Intent
-            // TODO: and let the receiving activity pull from db.
             startPuzzle(id);
         }
     }

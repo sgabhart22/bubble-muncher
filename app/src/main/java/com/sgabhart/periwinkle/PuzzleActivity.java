@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 
 public class PuzzleActivity extends AppCompatActivity {
@@ -121,6 +120,9 @@ public class PuzzleActivity extends AppCompatActivity {
         if(keyCode == 67){
             Log.w("Click, PuzzleActivity", "Delete clicked.");
             field.deleteLetter();
+        } else if(keyCode == 62){
+            Log.w("Click, PuzzleActivity","Space clicked.");
+            field.space();
         } else {
             char c = Character.toUpperCase((char)(keyCode));
             Log.w("PuzzleActivity onKeyUp", "Key pressed: " + c);

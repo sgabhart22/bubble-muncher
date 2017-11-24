@@ -300,20 +300,25 @@ public class Field implements Serializable {
             if(located){
                 box = finalBoxes[i];
 
-                Position previous = selected;
+                if(!box.isLocked()){
+                    Position previous = selected;
 
-                if(previous.x == 7){
-                    finalBoxes[previous.y].setSelected(false);
-                } else {
-                    boxes[previous.x][previous.y].setSelected(false);
+                    if(previous.x == 7){
+                        finalBoxes[previous.y].setSelected(false);
+                    } else {
+                        boxes[previous.x][previous.y].setSelected(false);
+                    }
+
+                    this.setSelected(new Position(7, i));
+                    box.setSelected(!(box.isSelected()));
+                    return box;
                 }
 
-                this.setSelected(new Position(7, i));
-                box.setSelected(!(box.isSelected()));
-                return box;
+                return new Box();
+
             } else return new Box();
         }
-    }
+    } // findBox
 
     public ArrayList<Rect> getLabelRects() {
         return labelRects;
@@ -399,7 +404,7 @@ public class Field implements Serializable {
 
         if(word.toString().equals(answer.toUpperCase())) return true;
         else return false;
-    }
+    } // checkWord
 
     public void advance(){
 
@@ -448,6 +453,23 @@ public class Field implements Serializable {
         }
     } // advance
 
+    public void space(){
+        Box b = new Box();
+
+        if(selected.x == 7){
+            b = finalBoxes[selected.y];
+        } else {
+            b = boxes[selected.x][selected.y];
+        }
+
+        if(b.getResponse() != ' '){
+            b.setResponse(' ');
+            advance();
+        } else {
+            advance();
+        }
+    }
+
     public void deleteLetter(){
         Box b = new Box();
 
@@ -463,7 +485,7 @@ public class Field implements Serializable {
         } else {
             selected = moveToPrevious();
         }
-    }
+    } // deleteLetter
 
     public Position moveToPrevious(){
         Position current = new Position(selected.x, selected.y);
@@ -513,7 +535,7 @@ public class Field implements Serializable {
         }
 
         return current;
-    }
+    } // moveToPrevious
 
     public Box[][] getBoxes(){ return boxes; }
 
