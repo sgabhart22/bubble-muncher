@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -15,11 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-/**
- * Created by Admin on 11/12/2017.
- */
-
-public class Field implements Serializable {
+public class Field implements Serializable{
 
     private Puzzle puzzle;
     private ArrayList<Rect> labelRects, answerRects, finalRects;
@@ -446,7 +444,7 @@ public class Field implements Serializable {
                 b.setSelected(false);
                 selected.y++;
 
-                if(finalBoxes[selected.y].isLocked()){
+                while(finalBoxes[selected.y].isLocked() && selected.y < finalBoxes.length){
                     selected.y++;
                 }
             }

@@ -24,6 +24,7 @@
 
         <activity
             android:name=".PuzzleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".MainActivity">
         </activity>
 
